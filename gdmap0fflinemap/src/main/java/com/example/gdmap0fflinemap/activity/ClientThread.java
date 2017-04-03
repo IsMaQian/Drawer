@@ -18,7 +18,17 @@ import com.example.gdmap0fflinemap.data.StartCloseData;
 import com.example.gdmap0fflinemap.data.StatusData;
 import com.example.gdmap0fflinemap.data.WayPointData;
 import com.example.gdmap0fflinemap.data.XBEEData;
+import com.example.gdmap0fflinemap.eventBus.Accelerated_EventBus;
+import com.example.gdmap0fflinemap.eventBus.GPS_EventBus;
+import com.example.gdmap0fflinemap.eventBus.Geomagnetism_EventBus;
 import com.example.gdmap0fflinemap.eventBus.IMU_EventBus;
+import com.example.gdmap0fflinemap.eventBus.Motor_EventBus;
+import com.example.gdmap0fflinemap.eventBus.Remote_EventBus;
+import com.example.gdmap0fflinemap.eventBus.Speed_EventBus;
+import com.example.gdmap0fflinemap.eventBus.StartClose_EventBus;
+import com.example.gdmap0fflinemap.eventBus.Status_EventBus;
+import com.example.gdmap0fflinemap.eventBus.WayPoint_EventBus;
+import com.example.gdmap0fflinemap.eventBus.XBEE_EventBus;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -138,9 +148,9 @@ public class ClientThread implements Runnable {
     /**XBEEͨ�ϼ������*/
     XBEEData xbeeData;
 
-    public ClientThread(Handler handler) {
-        this.handler = handler;
-    }
+//    public ClientThread(Handler handler) {
+//        this.handler = handler;
+//    }
 
     @Override
     public void run() {
@@ -209,7 +219,7 @@ public class ClientThread implements Runnable {
                                                     Log.d(TAG, "run: "+strRoll);
                                                     EventBus.getDefault().post(new IMU_EventBus(strRoll,strPitch,strYaw,strRollRate,strPichRate,strYawRate));
 
-                                                    handler.sendEmptyMessage(1);
+//                                                    handler.sendEmptyMessage(1);
                                                     break;
                                                 case 2:
                                                     dataType = packageType.PtAcceleratedSpeed;
@@ -217,7 +227,8 @@ public class ClientThread implements Runnable {
                                                     strAccX = String.valueOf(accspeed.getX());
                                                     strAccY = String.valueOf(accspeed.getY());
                                                     strAccZ = String.valueOf(accspeed.getZ());
-                                                    handler.sendEmptyMessage(2);
+                                                    EventBus.getDefault().post(new Accelerated_EventBus(strAccX, strAccY, strAccZ));
+//                                                    handler.sendEmptyMessage(2);
                                                     break;
                                                 case 3:
                                                     dataType = packageType.PtGeomagnetism;
@@ -225,7 +236,8 @@ public class ClientThread implements Runnable {
                                                     strGeoX = String.valueOf(geoData.getX());
                                                     strGeoY = String.valueOf(geoData.getY());
                                                     strGeoZ = String.valueOf(geoData.getZ());
-                                                    handler.sendEmptyMessage(3);
+                                                    EventBus.getDefault().post(new Geomagnetism_EventBus(strGeoX,strGeoY,strGeoZ));
+//                                                    handler.sendEmptyMessage(3);
                                                     break;
                                                 case 4:
                                                     dataType = packageType.PtRemoteControl;
@@ -234,7 +246,8 @@ public class ClientThread implements Runnable {
                                                     strRePitch=String.valueOf(remoteData.getPitch());
                                                     strReYaw=String.valueOf(remoteData.getYaw());
                                                     strReThrottle=String.valueOf(remoteData.getThrottle());
-                                                    handler.sendEmptyMessage(4);
+//                                                    handler.sendEmptyMessage(4);
+                                                    EventBus.getDefault().post(new Remote_EventBus(strReRoll,strRePitch,strReYaw,strReThrottle));
                                                     break;
                                                 case 5:
                                                     dataType = packageType.PtStartClose;
@@ -243,18 +256,21 @@ public class ClientThread implements Runnable {
                                                     strSW2=String.valueOf(closeData.getSW2());
                                                     strSW3=String.valueOf(closeData.getSW3());
                                                     strSW4=String.valueOf(closeData.getSW4());
-                                                    handler.sendEmptyMessage(5);
+//                                                    handler.sendEmptyMessage(5);
+                                                    EventBus.getDefault().post(new StartClose_EventBus(strSW1, strSW2, strSW3, strSW4));
                                                     break;
-
+//
                                                 case 6:
                                                     dataType = packageType.PtWayPoint;
                                                     wayPointData = new WayPointData(ss, 3);
                                                     strwayID=String.valueOf(wayPointData.getMotor_Front());
                                                     strwayCount=String.valueOf(wayPointData.getWayCount());
                                                     strwayIndex=String.valueOf(wayPointData.getWayIndex());
-                                                    handler.sendEmptyMessage(6);
-                                                    break;
+//                                                    handler.sendEmptyMessage(6);
+                                                    EventBus.getDefault().post(new WayPoint_EventBus(strwayID, strwayCount, strwayIndex));
 
+                                                    break;
+//
                                                 case 7:
                                                     dataType = packageType.PtMotor;
                                                     motorData = new MotorData(ss, 3);
@@ -264,18 +280,22 @@ public class ClientThread implements Runnable {
                                                     strMotor_Right=String.valueOf(motorData.getMotor_Right());
                                                     strMotor_X=String.valueOf(motorData.getMotor_X());
                                                     strMotor_Y=String.valueOf(motorData.getMotor_Y());
-                                                    handler.sendEmptyMessage(7);
-                                                    break;
+//                                                    handler.sendEmptyMessage(7);
+                                                    EventBus.getDefault().post(new Motor_EventBus(strMotor_Front, strMotor_Back, strMotor_Left, strMotor_Right, strMotor_X, strMotor_Y));
 
+                                                    break;
+//
                                                 case 8:
                                                     dataType = packageType.PtSpeed;
                                                     speedData = new SpeedData(ss, 3);
                                                     strLateral=String.valueOf(speedData.getLateral());
                                                     strLongitudinal=String.valueOf(speedData.getLongitudinal());
                                                     strAbout=String.valueOf(speedData.getAbout());
-                                                    handler.sendEmptyMessage(8);
-                                                    break;
+//                                                    handler.sendEmptyMessage(8);
+                                                    EventBus.getDefault().post(new Speed_EventBus(strLateral, strLongitudinal, strAbout));
 
+                                                    break;
+//
                                                 case 9:
                                                     dataType = packageType.PtGPS;
                                                     gpsData = new GPSData(ss, 3);
@@ -283,7 +303,8 @@ public class ClientThread implements Runnable {
                                                     strLongitude=String.valueOf(gpsData.getLongitude());;
                                                     strStarCount=String.valueOf(gpsData.getStarCount());
                                                     strHight=String.valueOf(gpsData.getHight());
-                                                    handler.sendEmptyMessage(9);
+//                                                    handler.sendEmptyMessage(9);
+                                                    EventBus.getDefault().post(new GPS_EventBus(strLatitude, strLongitude, strStarCount, strHight));
                                                     break;
 
                                                 case 10:
@@ -295,14 +316,18 @@ public class ClientThread implements Runnable {
                                                     strSensorStatus=String.valueOf(statusData.getSensorStatus());
                                                     strCommStatus=String.valueOf(statusData.getCommStatus());
                                                     strPhotoFlag=String.valueOf(statusData.getPhotoFlag());
-                                                    handler.sendEmptyMessage(10);
+//                                                    handler.sendEmptyMessage(10);
+                                                    EventBus.getDefault().post(new Status_EventBus(strFlyStatus, strVoltage, strSendFlag, strSensorStatus, strCommStatus, strPhotoFlag));
+
                                                     break;
 
                                                 case 11:
                                                     dataType = packageType.PtSpeed;
                                                     xbeeData = new XBEEData(ss, 3);
                                                     strXBEE=String.valueOf(xbeeData.getXBEE());
-                                                    handler.sendEmptyMessage(11);
+//                                                    handler.sendEmptyMessage(11);
+                                                    EventBus.getDefault().post(new XBEE_EventBus(strXBEE));
+
                                                     break;
                                             }
                                         }
@@ -354,7 +379,7 @@ public class ClientThread implements Runnable {
                                         {
                                             nPacketSize=13;
                                         }
-                                        //��Ҫ��0x06�е�11��Ϊ19
+//                                        //��Ҫ��0x06�е�11��Ϊ19
                                         else if (Date[2]==(byte)0x06)
                                         {
                                             nPacketSize=11;

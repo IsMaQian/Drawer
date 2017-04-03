@@ -2,7 +2,6 @@ package com.example.gdmap0fflinemap.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +13,6 @@ import android.widget.Toast;
 import com.example.gdmap0fflinemap.R;
 
 import java.io.IOException;
-
-import static com.example.gdmap0fflinemap.activity.ClientThread.strPichRate;
-import static com.example.gdmap0fflinemap.activity.ClientThread.strPitch;
-import static com.example.gdmap0fflinemap.activity.ClientThread.strRoll;
-import static com.example.gdmap0fflinemap.activity.ClientThread.strRollRate;
-import static com.example.gdmap0fflinemap.activity.ClientThread.strYaw;
-import static com.example.gdmap0fflinemap.activity.ClientThread.strYawRate;
 
 /**
  * Created by Administrator on 2017/1/29.
@@ -37,31 +29,35 @@ public class LinkIPActivity extends Activity {
     static int port;
     static boolean isConnecting = false;
     private static final String TAG = "LinkIPActivity";
-    Handler handler;
+//    Handler handler;
     ClientThread clientThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.link_activity);
         findViewById();
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
+//        handler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//
+////                if (msg.what == 1) {
+////                    String blank = "\n";
+////                    textView.append(blank +"IMU数据为:" + blank+
+////                            "滚转角为：" + strRoll + blank
+////                            + "俯仰角为：" + strPitch + blank
+////                            + "航向角为："+ strYaw + blank
+////                            + "陀螺仪Rollrate为："+ strRollRate + blank
+////                            + "陀螺仪Pitchrate为：" + strPichRate+ blank
+////                            + "陀螺仪Yawrate为：" + strYawRate + blank
+////                            + b\lank);
+////                }
+//                if (msg.what == 0x123) {
+//                    textView.append("\n" + msg.obj.toString());
+//                }
+//            }
+//        };
 
-                if (msg.what == 1) {
-                    String blank = "\n";
-                    textView.append(blank +"IMU数据为:" + blank+
-                            "滚转角为：" + strRoll + blank
-                            + "俯仰角为：" + strPitch + blank
-                            + "航向角为："+ strYaw + blank
-                            + "陀螺仪Rollrate为："+ strRollRate + blank
-                            + "陀螺仪Pitchrate为：" + strPichRate+ blank
-                            + "陀螺仪Yawrate为：" + strYawRate + blank
-                            + blank);
-                }
-            }
-        };
-
+        clientThread = new ClientThread();
     }
     private void findViewById() {
         Send = (Button) findViewById(R.id.send);
@@ -91,12 +87,12 @@ public class LinkIPActivity extends Activity {
                 new Thread(clientThread).interrupt();
                 IPLink.setText("重新连接");
                 IPText.setEnabled(true);
-                handler.removeCallbacks(clientThread);
+//                handler.removeCallbacks(clientThread);
             } else if (IsIPVaild()){
                 isConnecting = true;
                 IPLink.setText("断开连接");
                 IPText.setEnabled(false);
-                new Thread(new ClientThread(handler)).start();
+                new Thread(clientThread).start();
             }
 
         }
@@ -112,6 +108,7 @@ public class LinkIPActivity extends Activity {
                 msg.obj = SendText.getText().toString();
                 Log.d(TAG, "onClick: "+msg.obj);
                 clientThread.revHandle.sendMessage(msg);
+//                clientThread1.revHandler.sendMessage(msg);
                 SendText.setText("");
             } catch (Exception e) {
                 e.printStackTrace();

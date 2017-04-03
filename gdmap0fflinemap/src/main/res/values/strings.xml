@@ -20,4 +20,60 @@
     <string name="my_city">当前城市</string>
 
     <string name="sso_complete">完成</string>
+    <!--IMU数据-->
+    <string name="strRoll" >滚转角:</string>
+    <string name="strPitch">俯仰角:</string>
+    <string name="strYaw">航向角:</string>
+    <string name="strRollRate">陀螺仪Rollrate:</string>
+    <string name="strPitchRate">陀螺仪Pitchrate:</string>
+    <string name="strYawRate">陀螺仪Yawrate:</string>
+    <!--地磁数据-->
+    <string name="strGeoX" >X方向:</string>
+    <string name="strGeoY">Y方向:</string>
+    <string name="strGeoZ">Z方向:</string>
+    <!--加速度数据-->
+    <string name="strAccX" >X方向:</string>
+    <string name="strAccY">Y方向:</string>
+    <string name="strAccZ">Z方向:</string>
+    <!--遥控器数据-->
+    <string name="strReRoll" >Roll量:</string>
+    <string name="strRePitch">Pitch量:</string>
+    <string name="strReYaw">Yaw量:</string>
+    <string name="strReThrottle">Throttle量:</string>
+    <!--开关-->
+    <string name="strSW1" >SW1:</string>
+    <string name="strSW2">SW2:</string>
+    <string name="strSW3">SW3:</string>
+    <string name="strSW4">SW4:</string>
+    <!--路点-->
+    <string name="strwayID" >路点ID:</string>
+    <string name="strwayCount">路点数:</string>
+    <string name="strwayIndex">第几个路点:</string>
+    <!--电机数据-->
+    <string name="strMotor_Front">Motor_Front:</string>
+    <string name="strMotor_Back" >Motor_Back:</string>
+    <string name="strMotor_Left">Motor_Left:</string>
+    <string name="strMotor_Right">Motor_Right:</string>
+    <string name="strMotor_X">Motor_X:</string>
+    <string name="strMotor_Y">Motor_Y:</string>
+    <!--速度-->
+    <string name="strLateral" >横向速度:</string>
+    <string name="strLongitudinal">纵向速度:</string>
+    <string name="strAbout">上下速度:</string>
+    <!--GPS数据-->
+    <string name="strLatitude" >纬度:</string>
+    <string name="strLongitude">经度:</string>
+    <string name="strStarCount">星数:</string>
+    <string name="strHight">高度:</string>
+    <!--状态数据-->
+    <string name="strFlyStatus">飞行模式:</string>
+    <string name="strVoltage" >电压:</string>
+    <string name="strSendFlag">发送标志:</string>
+    <string name="strSensorStatus">传感器状态:</string>
+    <string name="strCommStatus">通信状态:</string>
+    <string name="strPhotoFlag">拍照标志:</string>
+    <!--XBEE通断检测数据-->
+    <string name="strXBEE">接收一个255数据:</string>
+
+
 </resources>

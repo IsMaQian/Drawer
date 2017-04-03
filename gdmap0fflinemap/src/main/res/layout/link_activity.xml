@@ -63,7 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="192.168.0.106:3200"
+        android:text="10.14.87.133:8080"
         android:ems="10"
         android:id="@+id/IPText"
         tools:layout_constraintTop_creator="1"

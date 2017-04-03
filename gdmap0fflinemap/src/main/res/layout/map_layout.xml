@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/btn_map_pattern"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/map_pattern"/>
+
+    <Button
+        android:id="@+id/btn_wasMenu"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btn_map_pattern"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:text="路点"
+        android:textColor="@color/white"
+        android:background="@color/gray_lite"/>
+
+    <LinearLayout
+        android:id="@+id/point_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/btn_map_pattern"
+        android:layout_toLeftOf="@+id/btn_wasMenu"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/point_background"
+        android:gravity="center"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <EditText
+                android:id="@+id/radius"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="请输入半径" />
+
+            <Button
+                android:id="@+id/radius_sure"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="确定"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/add_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加路点"
+                android:layout_marginLeft="5dp"/>
+
+            <Button
+                android:id="@+id/delete_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="删除路点"
+                android:layout_marginRight="5dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+            <Button
+                android:id="@+id/save_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="保存路点"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/sharps_background">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="速度:" />
+        <TextView
+            android:id="@+id/fly_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="m/s"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="高度:" />
+        <TextView
+            android:id="@+id/fly_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="m"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="航向:" />
+        <TextView
+            android:id="@+id/fly_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

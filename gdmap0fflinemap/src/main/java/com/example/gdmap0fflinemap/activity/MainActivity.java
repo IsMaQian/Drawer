@@ -4,18 +4,16 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -32,15 +30,19 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.example.gdmap0fflinemap.R;
 import com.example.gdmap0fflinemap.adapter.MyPagerAdapter;
 import com.example.gdmap0fflinemap.library.NavigationTabBar;
-import com.example.gdmap0fflinemap.offlineMap.*;
+import com.example.gdmap0fflinemap.offlineMap.OfflineMapActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements LocationSource ,AMapLocationListener{
+public class MainActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
     MapView mMapView = null;
     AMap aMap;
+    Button showUI;
+    Button satellite_map;
+    Button point_set;
+    LinearLayout pointSetUi;
+    Boolean IsPointSetUi=false;
+    Boolean IssatelliteMap=false;
     private AMapLocationClient mLocationClient = null;
     //����mLocationOption���󣬶�λ����
     public AMapLocationClientOption mLocationOption = null;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
     private static final int STROKE_COLOR = Color.argb(180, 3, 145, 255);
     private static final int FILL_COLOR = Color.argb(10, 0, 0, 180);
     LocalActivityManager manager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -74,33 +77,59 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
             aMap = mMapView.getMap();
             setUpMap();
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        showUI = (Button) findViewById(R.id.show_ui);
+        showUI.setOnClickListener(new showUIButtonListener());
         mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_main);
         Button offlinedownload = (Button) findViewById(R.id.downloadMap);
         offlinedownload.setOnClickListener(new OfflineDownload());
+        satellite_map = (Button) findViewById(R.id.btn_map_pattern);
+        satellite_map.setOnClickListener(new SatelliteMapButtonListener());
+        point_set = (Button) findViewById(R.id.btn_wasMenu);
+        point_set.setOnClickListener(new PointSetButtongListener());
+        pointSetUi = (LinearLayout) findViewById(R.id.point_set);
     }
 
-//出现toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar,menu);
-        return true;
-    }
-
-//自定义toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.setting:
-                mDrawerLayout.openDrawer(GravityCompat.END);
-                initNavigationTabBar();
-                break;
-            default:
-                break;
+    /*出现IP连接界面*/
+    private class showUIButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            mDrawerLayout.openDrawer(GravityCompat.END);
+            initNavigationTabBar();
         }
-        return true;
     }
+
+    /*卫星地图*/
+    private class SatelliteMapButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (!IssatelliteMap) {
+                aMap.setMapType(AMap.MAP_TYPE_SATELLITE);
+                IssatelliteMap = true;
+            } else {
+                aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+                IssatelliteMap = false;
+            }
+
+
+        }
+    }
+
+    /*设置路点界面出现*/
+    private class PointSetButtongListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (!IsPointSetUi) {
+                pointSetUi.setVisibility(View.VISIBLE);
+                IsPointSetUi = true;
+            } else {
+                pointSetUi.setVisibility(View.INVISIBLE);
+                IsPointSetUi = false;
+            }
+
+
+        }
+    }
+
 
     /**
      * 设置一些amap的属性
@@ -111,10 +140,10 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         // 设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
-        etupLocationStyle();
+        setupLocationStyle();
     }
 
-    private void etupLocationStyle(){
+    private void setupLocationStyle() {
         // 自定义系统定位蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         // 自定义定位蓝点图标
@@ -150,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
             mLocationClient.stopLocation();
             mLocationClient.onDestroy();
         }
-        mLocationClient=null;
+        mLocationClient = null;
     }
 
     @Override
@@ -159,11 +188,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
             if (amapLocation != null && amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
                 aMap.moveCamera(CameraUpdateFactory.zoomTo(20));
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(amapLocation.getAltitude(), amapLocation.getLongitude())));
+                aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude())));
                 StringBuffer buffer = new StringBuffer();
                 buffer.append(amapLocation.getLatitude() + "  "
                         + amapLocation.getLongitude() + "\n"
-                        +amapLocation.getCountry() + ""
+                        + amapLocation.getCountry() + ""
                         + amapLocation.getProvince() + ""
                         + amapLocation.getCity() + ""
                         + amapLocation.getDistrict() + ""
@@ -171,8 +200,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
                         + amapLocation.getStreetNum());
                 Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
             } else {
-                String errText = "定位失败," + amapLocation.getErrorCode()+ ": " + amapLocation.getErrorInfo();
-                Log.e("AmapErr",errText);
+                String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
+                Log.e("AmapErr", errText);
             }
         }
     }
@@ -202,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
         navigationTabBar = (NavigationTabBar) findViewById(R.id.navigation);
         final ArrayList<View> list = new ArrayList<View>();
         Intent link_intent = new Intent(this, LinkIPActivity.class);
-        list.add(getView("A",link_intent));
+        list.add(getView("A", link_intent));
         Intent data_link = new Intent(this, DataActivity.class);
         list.add(getView("B", data_link));
 
@@ -213,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                getResources().getDrawable(R.drawable.ic_eighth), bgColor
+                        getResources().getDrawable(R.drawable.ic_eighth), bgColor
                 ).build());
         models.add(
                 new NavigationTabBar.Model.Builder(
@@ -221,14 +250,14 @@ public class MainActivity extends AppCompatActivity implements LocationSource ,A
                 ).build());
 
         navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(viewPager,0);
+        navigationTabBar.setViewPager(viewPager, 0);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        if(null != mLocationClient){
+        if (null != mLocationClient) {
             mLocationClient.onDestroy();
         }
     }
